@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DOT_NET_Examenproject.Models.Bedrijf>
+
+@{
+    ViewData["Title"] = "Bedrijven";
+}
+
+<h1>Bedrijven</h1>
+
+<p>
+    <a asp-action="Create">Nieuw bedrijf aanmaken</a>
+</p>
+
+<p>
+
+    <form asp-action="Index" asp-controller="Bedrijfs" method="get">
+        Selecteer:
+        <input type="text" name="opzoekVeld" />
+        <input type="submit" value="Zoek" />
+    </form>
+
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrTva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrTel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrTva)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrTel)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BedrijfId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BedrijfId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BedrijfId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
