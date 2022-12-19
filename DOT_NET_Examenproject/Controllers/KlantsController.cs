@@ -23,12 +23,13 @@ namespace DOT_NET_Examenproject.Controllers
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
             var klanten = from g in _context.Klant
+                          where g.IsDeleted == false
                             orderby g.Name
                             select g;
 
             if (!string.IsNullOrEmpty(OpzoekVeld))
                 klanten = from g in klanten
-                            where g.Name.Contains(OpzoekVeld)
+                          where g.Name.Contains(OpzoekVeld) && g.IsDeleted == false
                             orderby g.Name
                             select g;
 
@@ -156,7 +157,7 @@ namespace DOT_NET_Examenproject.Controllers
             var klant = await _context.Klant.FindAsync(id);
             if (klant != null)
             {
-                _context.Klant.Remove(klant);
+                klant.IsDeleted = true;
             }
             
             await _context.SaveChangesAsync();

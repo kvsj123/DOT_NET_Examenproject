@@ -3,6 +3,7 @@ using DOT_NET_Examenproject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DOTNETExamenproject.Migrations
 {
     [DbContext(typeof(DOT_NET_ExamenprojectContext))]
-    partial class DOTNETExamenprojectContextModelSnapshot : ModelSnapshot
+    [Migration("20221219172507_modelModified")]
+    partial class modelModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
+using System.Numerics;
 
 namespace DOT_NET_Examenproject.Controllers
 {
@@ -23,12 +24,13 @@ namespace DOT_NET_Examenproject.Controllers
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
             var bedrijven = from g in _context.Bedrijf
+                            where g.IsDeleted == false
                             orderby g.Name
                             select g;
 
             if (!string.IsNullOrEmpty(OpzoekVeld))
                 bedrijven = from g in bedrijven
-                            where g.Name.Contains(OpzoekVeld)
+                            where g.Name.Contains(OpzoekVeld) && g.IsDeleted == false
                             orderby g.Name
                             select g;
             
@@ -159,7 +161,7 @@ namespace DOT_NET_Examenproject.Controllers
             var bedrijf = await _context.Bedrijf.FindAsync(id);
             if (bedrijf != null)
             {
-                _context.Bedrijf.Remove(bedrijf);
+                bedrijf.IsDeleted = true;
             }
             
             await _context.SaveChangesAsync();

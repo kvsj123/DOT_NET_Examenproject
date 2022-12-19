@@ -17,5 +17,7 @@ namespace DOT_NET_Examenproject.Models
         public string Email { get; set; }
         [Display(Name = "TelefoonNummer")]
         public int NrTel { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }
