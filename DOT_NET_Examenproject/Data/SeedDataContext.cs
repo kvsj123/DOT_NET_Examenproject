@@ -13,6 +13,7 @@ namespace DOT_NET_Examenproject.Data
             using (var context = new DOT_NET_ExamenprojectContext(serviceProvider.GetRequiredService
                                                               <DbContextOptions<DOT_NET_ExamenprojectContext>>()))
             {
+                context.Database.Migrate();
                 context.Database.EnsureCreated();    // Zorg dat de databank bestaat
 
                 if (!context.Bedrijf.Any())
@@ -36,6 +37,7 @@ namespace DOT_NET_Examenproject.Data
                     );
                     context.SaveChanges();
                 }
+
                 if (!context.Offerte.Any())
                 {
                     context.Offerte.AddRange(
@@ -44,12 +46,8 @@ namespace DOT_NET_Examenproject.Data
                         new Models.Offerte { TitelOfferte = "Werf Hasselt Carrefour", TotaalBedrag = 8560, KlantId = 2, BedrijfId = 2 }
                     );
                     context.SaveChanges();
+
                 }
-               
-
-
-
-
             }
         }
     }

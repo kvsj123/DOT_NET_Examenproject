@@ -5,11 +5,47 @@
 namespace DOTNETExamenproject.Migrations
 {
     /// <inheritdoc />
-    public partial class OfferteMigration : Migration
+    public partial class MigrateAll : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Bedrijf",
+                columns: table => new
+                {
+                    BedrijfId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NrTva = table.Column<int>(type: "int", nullable: false),
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NrTel = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bedrijf", x => x.BedrijfId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Klant",
+                columns: table => new
+                {
+                    KlantId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NrTva = table.Column<int>(type: "int", nullable: false),
+                    Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NrTel = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Klant", x => x.KlantId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Offerte",
                 columns: table => new
@@ -55,6 +91,12 @@ namespace DOTNETExamenproject.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Offerte");
+
+            migrationBuilder.DropTable(
+                name: "Bedrijf");
+
+            migrationBuilder.DropTable(
+                name: "Klant");
         }
     }
 }

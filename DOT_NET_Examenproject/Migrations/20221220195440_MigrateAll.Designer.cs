@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DOTNETExamenproject.Migrations
 {
     [DbContext(typeof(DOT_NET_ExamenprojectContext))]
-    [Migration("20221219172507_modelModified")]
-    partial class modelModified
+    [Migration("20221220195440_MigrateAll")]
+    partial class MigrateAll
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,58 @@ namespace DOTNETExamenproject.Migrations
                     b.HasKey("KlantId");
 
                     b.ToTable("Klant");
+                });
+
+            modelBuilder.Entity("DOT_NET_Examenproject.Models.Offerte", b =>
+                {
+                    b.Property<int>("OfferteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OfferteId"));
+
+                    b.Property<int>("BedrijfId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KlantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TitelOfferte")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("TotaalBedrag")
+                        .HasColumnType("real");
+
+                    b.HasKey("OfferteId");
+
+                    b.HasIndex("BedrijfId");
+
+                    b.HasIndex("KlantId");
+
+                    b.ToTable("Offerte");
+                });
+
+            modelBuilder.Entity("DOT_NET_Examenproject.Models.Offerte", b =>
+                {
+                    b.HasOne("DOT_NET_Examenproject.Models.Bedrijf", "Bedrijf")
+                        .WithMany()
+                        .HasForeignKey("BedrijfId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DOT_NET_Examenproject.Models.Klant", "Klant")
+                        .WithMany()
+                        .HasForeignKey("KlantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bedrijf");
+
+                    b.Navigation("Klant");
                 });
 #pragma warning restore 612, 618
         }
