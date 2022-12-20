@@ -17,5 +17,16 @@ namespace DOT_NET_Examenproject.Data
         public DbSet<DOT_NET_Examenproject.Models.Bedrijf> Bedrijf { get; set; } = default!;
 
         public DbSet<DOT_NET_Examenproject.Models.Klant> Klant { get; set; }
+
+        public DbSet<DOT_NET_Examenproject.Models.Offerte> Offerte { get; set; }
+
+        
+
+        
+
+        
+
+        
     }
+
 }

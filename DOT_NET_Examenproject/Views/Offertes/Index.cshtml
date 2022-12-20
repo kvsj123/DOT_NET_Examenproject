@@ -1,0 +1,53 @@
+﻿@model IEnumerable<DOT_NET_Examenproject.Models.Offerte>
+
+@{
+    ViewData["Title"] = "Offertes";
+}
+
+<h1>Offertes</h1>
+
+<p>
+    <a asp-action="Create">Nieuw offerte aanmaken</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TitelOfferte)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotaalBedrag)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Klant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bedrijf)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitelOfferte)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotaalBedrag)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Klant.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bedrijf.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OfferteId">Aanpassen</a> |
+                <a asp-action="Details" asp-route-id="@item.OfferteId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OfferteId">Verwijderen</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

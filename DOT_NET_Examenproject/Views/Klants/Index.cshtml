@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<DOT_NET_Examenproject.Models.Klant>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Klant";
 }
 
-<h1>Index</h1>
+<h1>Klant</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Nieuw klant aanmaken</a>
 </p>
 
 <p>
@@ -60,9 +60,9 @@
                 @Html.DisplayFor(modelItem => item.NrTel)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.KlantId">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.KlantId">Aanpassen</a> |
                 <a asp-action="Details" asp-route-id="@item.KlantId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.KlantId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.KlantId">Verwijderen</a>
             </td>
         </tr>
 }

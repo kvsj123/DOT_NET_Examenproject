@@ -1,10 +1,10 @@
 ﻿@model DOT_NET_Examenproject.Models.Bedrijf
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Aanpassen";
 }
 
-<h1>Edit</h1>
+<h1>Aanpassen</h1>
 
 <h4>Bedrijf</h4>
 <hr />
@@ -39,14 +39,14 @@
                 <span asp-validation-for="NrTel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Pas aan" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Terug naar overzicht van bedrijven</a>
 </div>
 
 @section Scripts {

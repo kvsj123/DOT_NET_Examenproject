@@ -1,0 +1,42 @@
+﻿@model DOT_NET_Examenproject.Models.Offerte
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Offerte</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TitelOfferte)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TitelOfferte)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotaalBedrag)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotaalBedrag)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Klant)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Klant.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bedrijf)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bedrijf.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.OfferteId">Aanpassen</a> |
+    <a asp-action="Index">Terug naar overzicht van offertes</a>
+</div>

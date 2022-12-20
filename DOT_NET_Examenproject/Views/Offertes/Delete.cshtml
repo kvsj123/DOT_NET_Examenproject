@@ -1,0 +1,45 @@
+﻿@model DOT_NET_Examenproject.Models.Offerte
+
+@{
+    ViewData["Title"] = "Verwijderen";
+}
+
+<h1>Verwijderen</h1>
+
+<h3>Bent u zeker dat u de offerte wilt verwijderen?</h3>
+<div>
+    <h4>Offerte</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TitelOfferte)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TitelOfferte)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TotaalBedrag)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TotaalBedrag)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Klant)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Klant.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bedrijf)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bedrijf.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="OfferteId" />
+        <input type="submit" value="Verwijderen" class="btn btn-danger" /> |
+        <a asp-action="Index">Terug naar overzicht van offertes</a>
+    </form>
+</div>
