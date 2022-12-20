@@ -20,10 +20,21 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Offertes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string OpzoekVeld)
         {
             var dOT_NET_ExamenprojectContext = _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant);
-            return View(await dOT_NET_ExamenprojectContext.ToListAsync());
+
+            var offerten = from g in _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant)
+                            where g.IsDeleted == false
+                            orderby g.TitelOfferte
+                            select g;
+
+            if (!string.IsNullOrEmpty(OpzoekVeld))
+                offerten = from g in offerten
+                            where g.TitelOfferte.Contains(OpzoekVeld) && g.IsDeleted == false
+                            orderby g.TitelOfferte
+                            select g;
+            return View(await offerten.ToListAsync());
         }
 
         // GET: Offertes/Details/5
@@ -51,6 +62,8 @@ namespace DOT_NET_Examenproject.Controllers
         {
             ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name");
             ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name");
+
+            
             return View();
         }
 
@@ -159,7 +172,7 @@ namespace DOT_NET_Examenproject.Controllers
             var offerte = await _context.Offerte.FindAsync(id);
             if (offerte != null)
             {
-                _context.Offerte.Remove(offerte);
+               offerte.IsDeleted = true;
             }
             
             await _context.SaveChangesAsync();

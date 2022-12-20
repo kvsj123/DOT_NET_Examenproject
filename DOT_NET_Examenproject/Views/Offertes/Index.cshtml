@@ -9,6 +9,17 @@
 <p>
     <a asp-action="Create">Nieuw offerte aanmaken</a>
 </p>
+
+<p>
+
+    <form asp-action="Index" asp-controller="Offertes" method="get">
+        Selecteer:
+        <input type="text" name="OpzoekVeld" />
+        <input type="submit" value="Zoek" />
+    </form>
+
+</p>
+
 <table class="table">
     <thead>
         <tr>

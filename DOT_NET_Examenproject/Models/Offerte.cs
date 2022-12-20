@@ -17,14 +17,17 @@ namespace DOT_NET_Examenproject.Models
 
         [Display(Name = "Klant")]
         public int KlantId { get; set; }
+
+        
         [ForeignKey("KlantId")]
-        public Klant Klant { get; set; }
+        public Klant? Klant { get; set; }
 
         [Display(Name = "Bedrijf")]
         public int BedrijfId { get; set; }
 
+        
         [ForeignKey("BedrijfId")]
-        public Bedrijf Bedrijf { get; set; }
+        public Bedrijf? Bedrijf { get; set; }
 
 
     }
