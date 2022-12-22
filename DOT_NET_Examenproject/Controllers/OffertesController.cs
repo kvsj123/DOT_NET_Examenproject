@@ -12,9 +12,9 @@ namespace DOT_NET_Examenproject.Controllers
 {
     public class OffertesController : Controller
     {
-        private readonly DOT_NET_ExamenprojectContext _context;
+        private readonly AppDbContext _context;
 
-        public OffertesController(DOT_NET_ExamenprojectContext context)
+        public OffertesController(AppDbContext context)
         {
             _context = context;
         }

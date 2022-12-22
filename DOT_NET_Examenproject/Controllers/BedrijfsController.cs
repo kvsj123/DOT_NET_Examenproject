@@ -13,9 +13,9 @@ namespace DOT_NET_Examenproject.Controllers
 {
     public class BedrijfsController : Controller
     {
-        private readonly DOT_NET_ExamenprojectContext _context;
+        private readonly AppDbContext _context;
 
-        public BedrijfsController(DOT_NET_ExamenprojectContext context)
+        public BedrijfsController(AppDbContext context)
         {
             _context = context;
         }

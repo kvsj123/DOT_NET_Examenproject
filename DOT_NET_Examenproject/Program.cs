@@ -1,21 +1,22 @@
-﻿using DOT_NET_Examenproject.Data;
+using DOT_NET_Examenproject.Areas.Identity.Data;
+using DOT_NET_Examenproject.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<DOT_NET_ExamenprojectContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DOT_NET_ExamenprojectContext") ?? throw new InvalidOperationException("Connection string 'DOT_NET_ExamenprojectContext' not found.")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppDbContextConnection") ?? throw new InvalidOperationException("Connection string 'DOT_NET_ExamenprojectContext' not found.")));
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+var connectionString = builder.Configuration.GetConnectionString("AppDbContextConnection");
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -48,7 +49,8 @@ app.MapRazorPages();
 using(var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedDataContext.Initialize(services);
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    SeedDataContext.Initialize(services, userManager);
 }
 
 app.Run();

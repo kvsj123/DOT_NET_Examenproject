@@ -12,9 +12,9 @@ namespace DOT_NET_Examenproject.Controllers
 {
     public class KlantsController : Controller
     {
-        private readonly DOT_NET_ExamenprojectContext _context;
+        private readonly AppDbContext _context;
 
-        public KlantsController(DOT_NET_ExamenprojectContext context)
+        public KlantsController(AppDbContext context)
         {
             _context = context;
         }

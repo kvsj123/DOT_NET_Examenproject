@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DOT_NET_Examenproject.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +9,36 @@ namespace DOT_NET_Examenproject.Data
 {
     public class SeedDataContext
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static void Initialize(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
         {
-            using (var context = new DOT_NET_ExamenprojectContext(serviceProvider.GetRequiredService
-                                                              <DbContextOptions<DOT_NET_ExamenprojectContext>>()))
+            using (var context = new AppDbContext(serviceProvider.GetRequiredService
+                                                              <DbContextOptions<AppDbContext>>()))
             {
+                ApplicationUser user = null;
+                
                 context.Database.Migrate();
                 context.Database.EnsureCreated();    // Zorg dat de databank bestaat
+
+                if (!context.Users.Any())
+                {
+                    user = new ApplicationUser
+                    {
+                        FirstName = "Admin",
+                        LastName = "Administrator",
+                        UserName = "AdminSys",
+                        Email = "Aministrator@app.com",
+                        EmailConfirmed = true
+                    };
+                    userManager.CreateAsync(user, "Abc!12345");
+                    context.SaveChanges();
+                }
+
+                if (!context.Roles.Any()) { 
+                    context.Roles.AddRange(
+                        new IdentityRole{ Id = "User", Name = "User", NormalizedName = "USER" },
+                        new IdentityRole { Id = "SystemAdministrator", Name = "SystemAdministrator", NormalizedName = "SystemAdministrator"});
+                    context.SaveChanges();
+                }
 
                 if (!context.Bedrijf.Any())
                 {
@@ -47,6 +71,14 @@ namespace DOT_NET_Examenproject.Data
                     );
                     context.SaveChanges();
 
+                }
+
+                if(user != null)
+                {
+                    context.UserRoles.AddRange(
+                        new IdentityUserRole<string> { UserId = user.Id, RoleId = "SystemAdministrator" },
+                        new IdentityUserRole<string> { UserId = user.Id, RoleId = "User" });
+                    context.SaveChanges();
                 }
             }
         }
