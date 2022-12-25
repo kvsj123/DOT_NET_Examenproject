@@ -1,9 +1,11 @@
 using DOT_NET_Examenproject.Areas.Identity.Data;
 using DOT_NET_Examenproject.Data;
+using DOT_NET_Examenproject.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
+using NETCore.MailKit.Infrastructure.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -18,6 +20,20 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
+builder.Services.Configure<MailKitOptions>(options =>
+{
+    options.Server = builder.Configuration["ExternalProviders:MailKit:SMTP:Address"];
+    options.Port = Convert.ToInt32(builder.Configuration["ExternalProviders:MailKit:SMTP:Port"]);
+    options.Account = builder.Configuration["ExternalProviders:MailKit:SMTP:Account"];
+    options.Password = builder.Configuration["ExternalProviders:MailKit:SMTP:Password"];
+    options.SenderEmail = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderEmail"];
+    options.SenderName = builder.Configuration["ExternalProviders:MailKit:SMTP:SenderName"];
+
+    // Set it to TRUE to enable ssl or tls, FALSE otherwise
+    options.Security = false;  // true zet ssl or tls aan
+});
 
 var app = builder.Build();
 
