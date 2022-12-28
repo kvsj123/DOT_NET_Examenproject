@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace DOT_NET_Examenproject.Models
@@ -19,5 +20,7 @@ namespace DOT_NET_Examenproject.Models
         public int NrTel { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+       
     }
 }

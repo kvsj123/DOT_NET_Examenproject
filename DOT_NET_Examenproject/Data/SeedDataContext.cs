@@ -15,12 +15,13 @@ namespace DOT_NET_Examenproject.Data
                                                               <DbContextOptions<AppDbContext>>()))
             {
                 ApplicationUser user = null;
-                
+
                 context.Database.Migrate();
                 context.Database.EnsureCreated();    // Zorg dat de databank bestaat
 
                 if (!context.Users.Any())
                 {
+                    
                     user = new ApplicationUser
                     {
                         FirstName = "Admin",
@@ -30,21 +31,23 @@ namespace DOT_NET_Examenproject.Data
                         EmailConfirmed = true
                     };
                     userManager.CreateAsync(user, "Abc!12345");
+              
                     context.SaveChanges();
                 }
 
-                if (!context.Roles.Any()) { 
+                if (!context.Roles.Any())
+                {
                     context.Roles.AddRange(
-                        new IdentityRole{ Id = "User", Name = "User", NormalizedName = "USER" },
-                        new IdentityRole { Id = "SystemAdministrator", Name = "SystemAdministrator", NormalizedName = "SystemAdministrator"});
+                        new IdentityRole { Id = "User", Name = "User", NormalizedName = "USER" },
+                        new IdentityRole { Id = "SystemAdministrator", Name = "SystemAdministrator", NormalizedName = "SystemAdministrator" });
                     context.SaveChanges();
                 }
 
                 if (!context.Bedrijf.Any())
                 {
                     context.Bedrijf.AddRange(
-                        
-                        new Models.Bedrijf { Name = "Jan", NrTva = 58976416, Adres = "fabriekstraat 15, 1080 Molenbeek", Email = "jan@gmail.com", NrTel = 124587},
+
+                        new Models.Bedrijf { Name = "Jan", NrTva = 58976416, Adres = "fabriekstraat 15, 1080 Molenbeek", Email = "jan@gmail.com", NrTel = 124587 },
                         new Models.Bedrijf { Name = "Pol", NrTva = 78954634, Adres = "azarastraat 70, 1070 Anderlecht", Email = "pol@gmail.com", NrTel = 548976 }
 
 
@@ -73,13 +76,14 @@ namespace DOT_NET_Examenproject.Data
 
                 }
 
-                if(user != null)
+                if (user != null)
                 {
                     context.UserRoles.AddRange(
-                        new IdentityUserRole<string> { UserId = user.Id, RoleId = "SystemAdministrator" },
-                        new IdentityUserRole<string> { UserId = user.Id, RoleId = "User" });
+                        new IdentityUserRole<string> { UserId = user.Id, RoleId = "SystemAdministrator" });
                     context.SaveChanges();
                 }
+
+
             }
         }
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DOTNETExamenproject.Migrations
 {
     /// <inheritdoc />
-    public partial class FixSeederUser : Migration
+    public partial class MigRoles : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

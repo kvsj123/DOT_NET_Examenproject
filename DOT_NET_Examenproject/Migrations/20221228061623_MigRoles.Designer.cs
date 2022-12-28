@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DOTNETExamenproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221222140824_FixSeederUser")]
-    partial class FixSeederUser
+    [Migration("20221228061623_MigRoles")]
+    partial class MigRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

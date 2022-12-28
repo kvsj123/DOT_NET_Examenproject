@@ -8,12 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
 using System.Numerics;
+using System.Security.Claims;
+using Microsoft.Exchange.WebServices.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity;
+using DOT_NET_Examenproject.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DOT_NET_Examenproject.Controllers
 {
     public class BedrijfsController : Controller
     {
         private readonly AppDbContext _context;
+        
 
         public BedrijfsController(AppDbContext context)
         {
@@ -23,14 +30,23 @@ namespace DOT_NET_Examenproject.Controllers
         // GET: Bedrijfs
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
+            /*
+
+
+            var bedrijven = from x in _context.Bedrijf
+                            where x.UserId == HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
+                            select x;
+            */
+
             var bedrijven = from g in _context.Bedrijf
                             where g.IsDeleted == false
                             orderby g.Name
                             select g;
+            
 
             if (!string.IsNullOrEmpty(OpzoekVeld))
                 bedrijven = from g in bedrijven
-                            where g.Name.Contains(OpzoekVeld) && g.IsDeleted == false
+                            where  g.Name.Contains(OpzoekVeld) && g.IsDeleted == false 
                             orderby g.Name
                             select g;
             
@@ -71,6 +87,15 @@ namespace DOT_NET_Examenproject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BedrijfId,Name,NrTva,Adres,Email,NrTel")] Bedrijf bedrijf)
         {
+           // bedrijf.UserId = User.Identity.GetUserId();
+           /* foreach (ModelState modelState in ViewData.ModelState.Values)
+            {
+                foreach (ModelError error in modelState.Errors)
+                {
+                    DoSomethingWith(error);
+                }
+            }
+           */ 
             if (ModelState.IsValid)
             {
                 _context.Add(bedrijf);
