@@ -10,6 +10,7 @@ using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
 using DOT_NET_Examenproject.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DOT_NET_Examenproject.Controllers
 {
@@ -25,6 +26,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Users/Create
+        [Authorize(Roles = "SystemAdministrator")]
         public IActionResult Index()
         {
             var userList = _db.Users.ToList();
@@ -46,7 +48,7 @@ namespace DOT_NET_Examenproject.Controllers
             return View(userList);
         }
 
-
+        [Authorize(Roles = "SystemAdministrator")]
         [HttpGet]
         public IActionResult Edit(string userId)
         {
@@ -74,6 +76,7 @@ namespace DOT_NET_Examenproject.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "SystemAdministrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApplicationUser user)
@@ -106,6 +109,7 @@ namespace DOT_NET_Examenproject.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "SystemAdministrator")]
         [HttpPost]
         public IActionResult Delete(string userId)
         {

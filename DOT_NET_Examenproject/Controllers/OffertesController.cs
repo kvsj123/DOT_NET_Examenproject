@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DOT_NET_Examenproject.Controllers
 {
@@ -20,6 +21,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Offertes
+        [Authorize]
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
             var dOT_NET_ExamenprojectContext = _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant);
@@ -38,6 +40,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Offertes/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Offerte == null)
@@ -58,6 +61,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Offertes/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name");
@@ -72,6 +76,7 @@ namespace DOT_NET_Examenproject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("OfferteId,TitelOfferte,TotaalBedrag,IsDeleted,KlantId,BedrijfId")] Offerte offerte)
         {
             if (ModelState.IsValid)
@@ -86,6 +91,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Offertes/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Offerte == null)
@@ -106,6 +112,7 @@ namespace DOT_NET_Examenproject.Controllers
         // POST: Offertes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OfferteId,TitelOfferte,TotaalBedrag,IsDeleted,KlantId,BedrijfId")] Offerte offerte)
@@ -141,6 +148,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Offertes/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Offerte == null)
@@ -161,6 +169,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // POST: Offertes/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

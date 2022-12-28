@@ -1,8 +1,21 @@
-﻿@{
+﻿@using DOT_NET_Examenproject.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welkom bij PrijsOfferte App!</h1>
+    <br />
+    <h2 class="display-4">Hier kunt u op een eenvoudig manier prijsoffertes opstellen voor uw klanten.</h2>
+    <br />
+    <br />
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <p class="display-8">Daarvoor moet u eerst u <a asp-area="Identity" asp-page="/Account/Login">inloggen</a>.</p>
+        <p class="display-8">Indien u nog geen account hebt moet u er eentje <a asp-area="Identity" asp-page="/Account/Register">Aanmaken</a>.</p>
+    }
 </div>

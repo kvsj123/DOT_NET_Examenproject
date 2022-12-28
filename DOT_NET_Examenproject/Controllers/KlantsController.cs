@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DOT_NET_Examenproject.Controllers
 {
@@ -20,6 +21,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Klants
+        [Authorize]
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
             var klanten = from g in _context.Klant
@@ -37,6 +39,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Klants/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Klant == null)
@@ -55,6 +58,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Klants/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -77,6 +81,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Klants/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Klant == null)
@@ -95,6 +100,7 @@ namespace DOT_NET_Examenproject.Controllers
         // POST: Klants/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("KlantId,Name,NrTva,Adres,Email,NrTel")] Klant klant)
@@ -128,6 +134,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Klants/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Klant == null)
@@ -146,6 +153,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // POST: Klants/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

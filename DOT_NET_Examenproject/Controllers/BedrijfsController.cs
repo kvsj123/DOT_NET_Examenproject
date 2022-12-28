@@ -14,9 +14,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNet.Identity;
 using DOT_NET_Examenproject.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DOT_NET_Examenproject.Controllers
 {
+
     public class BedrijfsController : Controller
     {
         private readonly AppDbContext _context;
@@ -28,6 +30,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Bedrijfs
+        [Authorize]
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
             /*
@@ -57,6 +60,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Bedrijfs/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Bedrijf == null)
@@ -75,6 +79,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Bedrijfs/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -83,6 +88,7 @@ namespace DOT_NET_Examenproject.Controllers
         // POST: Bedrijfs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BedrijfId,Name,NrTva,Adres,Email,NrTel")] Bedrijf bedrijf)
@@ -106,6 +112,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Bedrijfs/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Bedrijf == null)
@@ -124,6 +131,7 @@ namespace DOT_NET_Examenproject.Controllers
         // POST: Bedrijfs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BedrijfId,Name,NrTva,Adres,Email,NrTel")] Bedrijf bedrijf)
@@ -157,6 +165,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // GET: Bedrijfs/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Bedrijf == null)
@@ -175,6 +184,7 @@ namespace DOT_NET_Examenproject.Controllers
         }
 
         // POST: Bedrijfs/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
