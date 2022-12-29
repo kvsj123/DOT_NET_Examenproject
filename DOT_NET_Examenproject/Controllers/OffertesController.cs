@@ -105,9 +105,28 @@ namespace DOT_NET_Examenproject.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name");
-            ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name");
+            string userIdd = _userManager.GetUserId(HttpContext.User);
 
+            var FilBedrijven = from g in _context.Bedrijf
+                               where g.user_id == userIdd
+                               orderby g.Name
+                               select g;
+
+            var FilKlanten = from g in _context.Klant
+                              where g.user_id == userIdd
+                              orderby g.Name
+                              select g;
+
+               if (HttpContext.User.IsInRole("User"))
+            {
+                ViewData["BedrijfId"] = new SelectList(FilBedrijven, "BedrijfId", "Name");
+                ViewData["KlantId"] = new SelectList(FilKlanten, "KlantId", "Name");
+            }
+            else if (HttpContext.User.IsInRole("SystemAdministrator"))
+            {
+                ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name");
+                ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name");
+            }
             
             return View();
         }
@@ -122,6 +141,16 @@ namespace DOT_NET_Examenproject.Controllers
         {
             string userIdd = _userManager.GetUserId(HttpContext.User);
 
+            var FilBedrijven = from g in _context.Bedrijf
+                               where g.user_id == userIdd
+                               orderby g.Name
+                               select g;
+
+            var FilKlanten = from g in _context.Klant
+                               where g.user_id == userIdd
+                               orderby g.Name
+                               select g;
+
             if (ModelState.IsValid)
             {
                 offerte.user_id = userIdd;
@@ -129,8 +158,17 @@ namespace DOT_NET_Examenproject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name", offerte.BedrijfId);
-            ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name", offerte.KlantId);
+            
+            if (HttpContext.User.IsInRole("User"))
+            {
+                ViewData["BedrijfId"] = new SelectList(FilBedrijven, "BedrijfId", "Name", offerte.BedrijfId);
+                ViewData["KlantId"] = new SelectList(FilKlanten, "KlantId", "Name", offerte.KlantId);
+            }
+            else if (HttpContext.User.IsInRole("SystemAdministrator"))
+            {
+                ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name", offerte.BedrijfId);
+                ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name", offerte.KlantId);
+            }
             return View(offerte);
         }
 
@@ -138,7 +176,17 @@ namespace DOT_NET_Examenproject.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            
+            string userIdd = _userManager.GetUserId(HttpContext.User);
+
+            var FilBedrijven = from g in _context.Bedrijf
+                               where g.user_id == userIdd
+                               orderby g.Name
+                               select g;
+
+            var FilKlanten = from g in _context.Klant
+                             where g.user_id == userIdd
+                             orderby g.Name
+                             select g;
 
             if (id == null || _context.Offerte == null)
             {
@@ -150,8 +198,16 @@ namespace DOT_NET_Examenproject.Controllers
             {
                 return NotFound();
             }
-            ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name", offerte.BedrijfId);
-            ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name", offerte.KlantId);
+            if (HttpContext.User.IsInRole("User"))
+            {
+                ViewData["BedrijfId"] = new SelectList(FilBedrijven, "BedrijfId", "Name", offerte.BedrijfId);
+                ViewData["KlantId"] = new SelectList(FilKlanten, "KlantId", "Name", offerte.KlantId);
+            }
+            else if (HttpContext.User.IsInRole("SystemAdministrator"))
+            {
+                ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name", offerte.BedrijfId);
+                ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name", offerte.KlantId);
+            }
             return View(offerte);
         }
 
@@ -164,6 +220,16 @@ namespace DOT_NET_Examenproject.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("OfferteId,TitelOfferte,TotaalBedrag,IsDeleted,KlantId,BedrijfId")] Offerte offerte)
         {
             string userIdd = _userManager.GetUserId(HttpContext.User);
+
+            var FilBedrijven = from g in _context.Bedrijf
+                               where g.user_id == userIdd
+                               orderby g.Name
+                               select g;
+
+            var FilKlanten = from g in _context.Klant
+                             where g.user_id == userIdd
+                             orderby g.Name
+                             select g;
 
             if (id != offerte.OfferteId)
             {
@@ -191,8 +257,16 @@ namespace DOT_NET_Examenproject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name", offerte.BedrijfId);
-            ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name", offerte.KlantId);
+            if (HttpContext.User.IsInRole("User"))
+            {
+                ViewData["BedrijfId"] = new SelectList(FilBedrijven, "BedrijfId", "Name", offerte.BedrijfId);
+                ViewData["KlantId"] = new SelectList(FilKlanten, "KlantId", "Name", offerte.KlantId);
+            }
+            else if (HttpContext.User.IsInRole("SystemAdministrator"))
+            {
+                ViewData["BedrijfId"] = new SelectList(_context.Bedrijf, "BedrijfId", "Name", offerte.BedrijfId);
+                ViewData["KlantId"] = new SelectList(_context.Klant, "KlantId", "Name", offerte.KlantId);
+            }
             return View(offerte);
         }
 

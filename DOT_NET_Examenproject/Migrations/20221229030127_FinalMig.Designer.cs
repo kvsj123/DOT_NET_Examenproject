@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DOTNETExamenproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221229021959_FinalMig")]
+    [Migration("20221229030127_FinalMig")]
     partial class FinalMig
     {
         /// <inheritdoc />
