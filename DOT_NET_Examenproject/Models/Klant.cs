@@ -18,5 +18,7 @@ namespace DOT_NET_Examenproject.Models
         public int NrTel { get; set; }
         public bool IsDeleted { get; set; } = false;
 
+        public string? user_id { get; set; }
+
     }
 }

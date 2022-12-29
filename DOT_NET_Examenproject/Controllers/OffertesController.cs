@@ -8,35 +8,76 @@ using Microsoft.EntityFrameworkCore;
 using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
 using Microsoft.AspNetCore.Authorization;
+using DOT_NET_Examenproject.Areas.Identity.Data;
+using Microsoft.Exchange.WebServices.Data;
 
 namespace DOT_NET_Examenproject.Controllers
 {
     public class OffertesController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
 
-        public OffertesController(AppDbContext context)
+        public OffertesController(AppDbContext context, Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Offertes
         [Authorize]
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
-            var dOT_NET_ExamenprojectContext = _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant);
+            if (HttpContext.User.IsInRole("SystemAdministrator"))
+            {
+                var dOT_NET_ExamenprojectContext = _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant);
 
-            var offerten = from g in _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant)
-                            where g.IsDeleted == false
-                            orderby g.TitelOfferte
-                            select g;
+                var offerten = from g in _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant)
+                               where g.IsDeleted == false
+                               orderby g.TitelOfferte
+                               select g;
 
-            if (!string.IsNullOrEmpty(OpzoekVeld))
-                offerten = from g in offerten
-                            where g.TitelOfferte.Contains(OpzoekVeld) && g.IsDeleted == false
-                            orderby g.TitelOfferte
-                            select g;
-            return View(await offerten.ToListAsync());
+                if (!string.IsNullOrEmpty(OpzoekVeld))
+                    offerten = from g in offerten
+                               where g.TitelOfferte.Contains(OpzoekVeld) && g.IsDeleted == false
+                               orderby g.TitelOfferte
+                               select g;
+                return View(await offerten.ToListAsync());
+            }
+            else if (HttpContext.User.IsInRole("User"))
+            {
+                string userIdd = _userManager.GetUserId(HttpContext.User);
+
+                var dOT_NET_ExamenprojectContext = _context.Offerte.Include(o => o.Bedrijf).Include(o => o.Klant);
+
+                var FilOfferten = from g in dOT_NET_ExamenprojectContext
+                                   where g.user_id == userIdd
+                                   orderby g.TitelOfferte
+                                   select g;
+
+                
+
+                var offerten = from g in FilOfferten
+                               where g.IsDeleted == false
+                               orderby g.TitelOfferte
+                               select g;
+
+                if (!string.IsNullOrEmpty(OpzoekVeld))
+                    offerten = from g in offerten
+                               where g.TitelOfferte.Contains(OpzoekVeld) && g.IsDeleted == false
+                               orderby g.TitelOfferte
+                               select g;
+                return View(await offerten.ToListAsync());
+
+
+
+            }
+            else
+            {
+                return View(null);
+            }
+
+            
         }
 
         // GET: Offertes/Details/5
@@ -79,8 +120,11 @@ namespace DOT_NET_Examenproject.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("OfferteId,TitelOfferte,TotaalBedrag,IsDeleted,KlantId,BedrijfId")] Offerte offerte)
         {
+            string userIdd = _userManager.GetUserId(HttpContext.User);
+
             if (ModelState.IsValid)
             {
+                offerte.user_id = userIdd;
                 _context.Add(offerte);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,6 +138,8 @@ namespace DOT_NET_Examenproject.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+            
+
             if (id == null || _context.Offerte == null)
             {
                 return NotFound();
@@ -117,6 +163,8 @@ namespace DOT_NET_Examenproject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OfferteId,TitelOfferte,TotaalBedrag,IsDeleted,KlantId,BedrijfId")] Offerte offerte)
         {
+            string userIdd = _userManager.GetUserId(HttpContext.User);
+
             if (id != offerte.OfferteId)
             {
                 return NotFound();
@@ -126,6 +174,7 @@ namespace DOT_NET_Examenproject.Controllers
             {
                 try
                 {
+                    offerte.user_id = userIdd;
                     _context.Update(offerte);
                     await _context.SaveChangesAsync();
                 }

@@ -29,6 +29,8 @@ namespace DOT_NET_Examenproject.Models
         [ForeignKey("BedrijfId")]
         public Bedrijf? Bedrijf { get; set; }
 
+        public string? user_id { get; set; }
+
 
     }
 

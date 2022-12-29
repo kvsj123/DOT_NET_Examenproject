@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DOTNETExamenproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221228061623_MigRoles")]
-    partial class MigRoles
+    [Migration("20221229021959_FinalMig")]
+    partial class FinalMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,6 +127,9 @@ namespace DOTNETExamenproject.Migrations
                     b.Property<int>("NrTva")
                         .HasColumnType("int");
 
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BedrijfId");
 
                     b.ToTable("Bedrijf");
@@ -161,6 +164,9 @@ namespace DOTNETExamenproject.Migrations
                     b.Property<int>("NrTva")
                         .HasColumnType("int");
 
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("KlantId");
 
                     b.ToTable("Klant");
@@ -189,6 +195,9 @@ namespace DOTNETExamenproject.Migrations
 
                     b.Property<float>("TotaalBedrag")
                         .HasColumnType("real");
+
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OfferteId");
 

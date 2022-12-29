@@ -8,34 +8,72 @@ using Microsoft.EntityFrameworkCore;
 using DOT_NET_Examenproject.Data;
 using DOT_NET_Examenproject.Models;
 using Microsoft.AspNetCore.Authorization;
+using DOT_NET_Examenproject.Areas.Identity.Data;
+using Microsoft.Exchange.WebServices.Data;
 
 namespace DOT_NET_Examenproject.Controllers
 {
     public class KlantsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
 
-        public KlantsController(AppDbContext context)
+        public KlantsController(AppDbContext context, Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Klants
         [Authorize]
         public async Task<IActionResult> Index(string OpzoekVeld)
         {
-            var klanten = from g in _context.Klant
-                          where g.IsDeleted == false
-                            orderby g.Name
-                            select g;
+            if (HttpContext.User.IsInRole("SystemAdministrator"))
+            {
+                var klanten = from g in _context.Klant
+                                where g.IsDeleted == false
+                                orderby g.Name
+                                select g;
 
-            if (!string.IsNullOrEmpty(OpzoekVeld))
-                klanten = from g in klanten
-                          where g.Name.Contains(OpzoekVeld) && g.IsDeleted == false
-                            orderby g.Name
-                            select g;
 
-            return View(await klanten.ToListAsync());
+                if (!string.IsNullOrEmpty(OpzoekVeld))
+                    klanten = from g in klanten
+                                where g.Name.Contains(OpzoekVeld) && g.IsDeleted == false
+                                orderby g.Name
+                                select g;
+
+
+
+
+                return View(await klanten.ToListAsync());
+            }
+            else if (HttpContext.User.IsInRole("User"))
+            {
+                string userIdd = _userManager.GetUserId(HttpContext.User);
+
+                var FilKlanten = from g in _context.Klant
+                                   where g.user_id == userIdd
+                                   orderby g.Name
+                                   select g;
+
+
+                var klanten = from g in FilKlanten
+                                where g.IsDeleted == false
+                                orderby g.Name
+                                select g;
+
+
+                if (!string.IsNullOrEmpty(OpzoekVeld))
+                    klanten = from g in klanten
+                                where g.Name.Contains(OpzoekVeld) && g.IsDeleted == false
+                                orderby g.Name
+                                select g;
+                return View(await klanten.ToListAsync());
+            }
+            else
+            {
+                return View(null);
+            }
         }
 
         // GET: Klants/Details/5
@@ -71,9 +109,12 @@ namespace DOT_NET_Examenproject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("KlantId,Name,NrTva,Adres,Email,NrTel")] Klant klant)
         {
+            string userIdd = _userManager.GetUserId(HttpContext.User);
+
             if (ModelState.IsValid)
             {
                 _context.Add(klant);
+                klant.user_id = userIdd;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -105,6 +146,8 @@ namespace DOT_NET_Examenproject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("KlantId,Name,NrTva,Adres,Email,NrTel")] Klant klant)
         {
+            string userIdd = _userManager.GetUserId(HttpContext.User);
+
             if (id != klant.KlantId)
             {
                 return NotFound();
@@ -114,6 +157,7 @@ namespace DOT_NET_Examenproject.Controllers
             {
                 try
                 {
+                    klant.user_id = userIdd;
                     _context.Update(klant);
                     await _context.SaveChangesAsync();
                 }

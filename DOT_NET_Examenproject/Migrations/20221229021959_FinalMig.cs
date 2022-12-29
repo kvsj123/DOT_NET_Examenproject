@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DOTNETExamenproject.Migrations
 {
     /// <inheritdoc />
-    public partial class MigRoles : Migration
+    public partial class FinalMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,8 @@ namespace DOTNETExamenproject.Migrations
                     Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NrTel = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    userid = table.Column<string>(name: "user_id", type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,7 +82,8 @@ namespace DOTNETExamenproject.Migrations
                     Adres = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NrTel = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    userid = table.Column<string>(name: "user_id", type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,7 +206,8 @@ namespace DOTNETExamenproject.Migrations
                     TotaalBedrag = table.Column<float>(type: "real", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     KlantId = table.Column<int>(type: "int", nullable: false),
-                    BedrijfId = table.Column<int>(type: "int", nullable: false)
+                    BedrijfId = table.Column<int>(type: "int", nullable: false),
+                    userid = table.Column<string>(name: "user_id", type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

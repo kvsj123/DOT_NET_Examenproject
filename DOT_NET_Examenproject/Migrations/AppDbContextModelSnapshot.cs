@@ -124,6 +124,9 @@ namespace DOTNETExamenproject.Migrations
                     b.Property<int>("NrTva")
                         .HasColumnType("int");
 
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BedrijfId");
 
                     b.ToTable("Bedrijf");
@@ -158,6 +161,9 @@ namespace DOTNETExamenproject.Migrations
                     b.Property<int>("NrTva")
                         .HasColumnType("int");
 
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("KlantId");
 
                     b.ToTable("Klant");
@@ -186,6 +192,9 @@ namespace DOTNETExamenproject.Migrations
 
                     b.Property<float>("TotaalBedrag")
                         .HasColumnType("real");
+
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OfferteId");
 
