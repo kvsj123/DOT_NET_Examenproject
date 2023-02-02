@@ -10,6 +10,15 @@ using DOT_NET_Examenproject.Models;
 using Microsoft.AspNetCore.Authorization;
 using DOT_NET_Examenproject.Areas.Identity.Data;
 using Microsoft.Exchange.WebServices.Data;
+using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Bcpg.Sig;
+using static Microsoft.Exchange.WebServices.Data.SearchFilter;
+using static System.Net.Mime.MediaTypeNames;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Diagnostics;
+using iTextSharp.text.pdf.draw;
+using NuGet.Protocol;
 
 namespace DOT_NET_Examenproject.Controllers
 {
@@ -101,8 +110,15 @@ namespace DOT_NET_Examenproject.Controllers
             return View(offerte);
         }
 
+      
+        
+
+
+
+
+
         // GET: Offertes/Create
-        [Authorize]
+                [Authorize]
         public IActionResult Create()
         {
             string userIdd = _userManager.GetUserId(HttpContext.User);
@@ -151,14 +167,116 @@ namespace DOT_NET_Examenproject.Controllers
                                orderby g.Name
                                select g;
 
+       
+
             if (ModelState.IsValid)
             {
+
+                var klant = await _context.Klant.FindAsync(offerte.KlantId);
+                var bedrijf = await _context.Bedrijf.FindAsync(offerte.BedrijfId);
+
+                string fileName = $"Offerte_{offerte.TitelOfferte}.pdf";
+                string outFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", fileName);
+                Document document = new Document();
+
+                FileStream stream = new FileStream(outFile, FileMode.Create);
+
+                PdfWriter.GetInstance(document, stream);
+                document.Open();
+
+                // Add the client and provider information to the PDF
+                var top = FontFactory.GetFont("Arial", 30, Font.BOLD, BaseColor.Black);
+                var titleFont = FontFactory.GetFont("Arial", 18, Font.BOLD, BaseColor.Black);
+                var bottom = FontFactory.GetFont("Arial", 16, Font.BOLD, BaseColor.DarkGray);
+                var info_style = FontFactory.GetFont("Helvetica", 14, Font.BOLD, BaseColor.Black);
+
+                Paragraph p14 = new Paragraph("Offerte: " + offerte.TitelOfferte + "\n\n", top);
+                p14.Alignment = Element.ALIGN_CENTER;
+                document.Add(p14);
+
+                // Add a horizontal rule to separate the title from the content
+                var rule = new Chunk(new LineSeparator());
+
+
+                BaseColor blue = new BaseColor(0, 75, 155);
+                BaseColor gris = new BaseColor(240, 240, 240);
+                BaseColor blanc = new BaseColor(0, 75, 155);
+
+                Font title_style = new Font(iTextSharp.text.Font.HELVETICA, 15f, iTextSharp.text.Font.BOLD, BaseColor.Black);
+
+
+                Paragraph p13 = new Paragraph("Klant: " + "\n", titleFont);
+                p13.Alignment = Element.ALIGN_LEFT;
+                document.Add(p13);
+                Paragraph p1 = new Paragraph(klant.Name, info_style);
+                p1.Alignment = Element.ALIGN_LEFT;
+                document.Add(p1);
+                Paragraph p2 = new Paragraph("BE " + klant.NrTva, info_style);
+                p2.Alignment = Element.ALIGN_LEFT;
+                document.Add(p2);
+                Paragraph p3 = new Paragraph(klant.Adres, info_style);
+                p3.Alignment = Element.ALIGN_LEFT;
+                document.Add(p3);
+                Paragraph p4 = new Paragraph(klant.Email, info_style);
+                p4.Alignment = Element.ALIGN_LEFT;
+                document.Add(p4);
+                Paragraph p5 = new Paragraph(klant.NrTel + "\n\n", info_style);
+                p5.Alignment = Element.ALIGN_LEFT;
+                document.Add(p5);
+
+                Paragraph p12 = new Paragraph("Bedrijf: " + "\n", titleFont);
+                p12.Alignment = Element.ALIGN_RIGHT;
+                document.Add(p12);
+                Paragraph p6 = new Paragraph(bedrijf.Name, info_style);
+                p6.Alignment = Element.ALIGN_RIGHT;
+                document.Add(p6);
+                Paragraph p7 = new Paragraph("BE " + bedrijf.NrTva, info_style);
+                p7.Alignment = Element.ALIGN_RIGHT;
+                document.Add(p7);
+                Paragraph p8 = new Paragraph(bedrijf.Adres, info_style);
+                p8.Alignment = Element.ALIGN_RIGHT;
+                document.Add(p8);
+                Paragraph p9 = new Paragraph(bedrijf.Email, info_style);
+                p9.Alignment = Element.ALIGN_RIGHT;
+                document.Add(p9);
+                Paragraph p10 = new Paragraph(bedrijf.NrTel + "\n\n\n\n\n\n\n\n\n\n\n\n", info_style);
+                p10.Alignment = Element.ALIGN_RIGHT;
+                document.Add(p10);
+
+                Paragraph p11 = new Paragraph("TOTAAL BEDRAG: " + offerte.TotaalBedrag + "€\n\n\n", titleFont);
+                p11.Alignment = Element.ALIGN_CENTER;
+                document.Add(p11);
+
+                
+
+                // Add a horizontal rule to separate the company information from the invoice details
+                document.Add(rule);
+
+                // Add the invoice details to the document
+                Paragraph p15 = new Paragraph("Bedankt om zo snel mogelijk te betalen!", bottom);
+                p15.Alignment = Element.ALIGN_CENTER;
+                document.Add(p15);
+
+                document.Close();
+               
+                byte[] fileBytes = new byte[stream.Length];
+                stream.Dispose();
+                stream.Close();
+                
+                
+                Process.Start(@"cmd.exe", @"/c" + outFile);
+                document.Close();
                 offerte.user_id = userIdd;
+
                 _context.Add(offerte);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                return File(fileBytes, "application/pdf", fileName);
             }
+           
+
             
+
             if (HttpContext.User.IsInRole("User"))
             {
                 ViewData["BedrijfId"] = new SelectList(FilBedrijven, "BedrijfId", "Name", offerte.BedrijfId);

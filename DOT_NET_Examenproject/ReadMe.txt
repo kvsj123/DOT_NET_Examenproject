@@ -9,3 +9,7 @@ De admin kan alle aangemaakte Bedrijven, klanten en offertes van alle users mani
 De admin heeft ook een overzicht van alle users en kan de rollen aanpassen.
 
 De user kan enkel zijn zelfgemaakte bedrijven, klanten en offertes zien en manipuleren
+
+De User dat geseed is, is Admin 
+account---> username: AdminSys
+			password: Abc!12345
