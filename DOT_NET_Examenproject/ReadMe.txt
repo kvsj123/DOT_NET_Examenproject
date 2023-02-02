@@ -8,6 +8,9 @@ account-> Email: kristianvasiaj2000@gmail.com
 De admin kan alle aangemaakte Bedrijven, klanten en offertes van alle users manipuleren.
 De admin heeft ook een overzicht van alle users en kan de rollen aanpassen.
 
+Bij het aanmaken van een offerte wordt een offerte gegenereerd in een pdf file met de gegevens van de klant en bedrijf + de totaalbedrag.
+Deze wordt automatisch gedownload in de folder 'wwwroot', daar kun je alle pdf files die gecreerd zijn vinden.
+
 De user kan enkel zijn zelfgemaakte bedrijven, klanten en offertes zien en manipuleren
 
 De User dat geseed is, is Admin 
